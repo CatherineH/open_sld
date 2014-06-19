@@ -207,14 +207,12 @@ def list_devices():
     '''method to list devices connected.
     total connected and specific serial for a device position'''
     n = c.c_ulong()
-    #_PY_ListDevices(c.byref(n), None, c.c_ulong(FT_LIST_NUMBER_ONLY))
-    _PY_ListDevices(c.byref(n), None, c.c_ulong(FT_LIST_ALL))
-    #_PY_ListDevices(c.byref(n), None, c.c_ulong(FT_LIST_BY_INDEX))
+    _PY_ListDevices(c.byref(n), None, c.c_ulong(FT_LIST_NUMBER_ONLY))
     if n.value:
         p_array = (c.c_char_p*(n.value + 1))()
         for i in xrange(n.value):
             p_array[i] = c.cast(c.c_buffer(64), c.c_char_p)
-        #_PY_ListDevices(p_array, c.byref(n), c.c_ulong(FT_LIST_ALL|FT_OPEN_BY_SERIAL_NUMBER ))
+        _PY_ListDevices(p_array, c.byref(n), c.c_ulong(FT_LIST_ALL|FT_OPEN_BY_SERIAL_NUMBER ))
         return [ser for ser in p_array[:n.value]]
     else:
         return []
@@ -285,8 +283,6 @@ def open_ex_by_name(name):
     Serial fetched by the ListDevices fn'''
     ftHandle = c.c_ulong()
     dw_flags = c.c_ulong(FT_OPEN_BY_DESCRIPTION)
-    print(name)
-    print(c.c_char_p(name))
     _PY_OpenEx(c.c_char_p(name), dw_flags, c.byref(ftHandle))
     return FTD2XX(ftHandle)
 

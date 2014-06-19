@@ -370,7 +370,7 @@ sld.TAP_Reset()
 sld.close()
 print() 
 print('closed')
-print_function('Done')
+print('Done')
 
 #-------------------------------------------------------------------------------
 #
